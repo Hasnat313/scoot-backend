@@ -15,32 +15,40 @@ exports.postAdminSignup = (req, res) => {
     const password = req.body.password;
     const userName = req.body.userName;
 
-    // adminModel.findOne({ emailAddress: emailAddress, password: password }, (err, data) => {
-    //     if (!err && data != null) {
-    //         console.log(data);
-    //         const token = jwt.sign({ _id: process.env.id }, process.env.key);
-    //         res.json(token);
-    //     }
-    // })
-    newadminSignup = new adminModel({
-        _id: mongoose.Types.ObjectId(),
-        emailAddress: emailAddress,
-        password: password,
-        userName: userName
-    })
-    console.log("running");
-    newadminSignup.save((err, data) => {
-        if (!err) {
-            console.log("running");
-            var obj = {};
-            const token = jwt.sign({ _id: process.env.id }, process.env.key);
-            obj.token = token;
-            obj.data = data;
-            res.json(obj);
+    adminModel.findOne({ emailAddress: emailAddress }, (err, data) => {
+        if (!err && data !== null) {
+            res.json("Email Already Exists")
         } else {
-            res.json(err);
+            adminModel.findOne({ userName: userName }, (err, data) => {
+                if (!err && data !== null) {
+                    res.json("userName Already Exists")
+                } else {
+                    newadminSignup = new adminModel({
+                        _id: mongoose.Types.ObjectId(),
+                        emailAddress: emailAddress,
+                        password: password,
+                        userName: userName
+                    })
+                    console.log("running");
+                    newadminSignup.save((err, data) => {
+                        if (!err) {
+                            console.log("running");
+                            var obj = {};
+                            const token = jwt.sign({ _id: process.env.id }, process.env.key);
+                            obj.token = token;
+                            obj.data = data;
+                            res.json(obj);
+                        } else {
+                            res.json(err);
+                        }
+                    })
+                }
+            })
         }
     })
+
+
+
 
 }
 
@@ -53,6 +61,7 @@ exports.updateAdmninProfile = (req, res) => {
 
         adminModel.updateOne({ _id: adminID }, { userName: userName, emailAddress: emailAddress, password: password }, (err, data) => {
             if (!err) {
+                console.log("ddfdsf");
                 res.json(data);
             }
         })
@@ -74,3 +83,11 @@ exports.updateAdmninProfile = (req, res) => {
 //     res.json("Good Bye")
 
 // }
+exports.deleteAdmin = (req, res) => {
+    adminID = req.body.adminID;
+    profileModel.deleteOne({ _id: adminID }, (err, data) => {
+        if (!err) {
+            res.json(data);
+        }
+    })
+}

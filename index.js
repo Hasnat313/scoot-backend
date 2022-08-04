@@ -25,7 +25,7 @@ app.use(bodyParser.json())
 //     resave: false
 // }));
 mongoose.connect("mongodb://127.0.0.1:27017/Scooto")
-    // mongoose.connect("mongodb+srv://hasnat100:123hasnat@cluster0.pslss.mongodb.net/PitchYourself")
+    // mongoose.connect("mongodb+srv://hasnat100:123hasnat@cluster0.pslss.mongodb.net/Scooto")
 
 app.use("/signup", require("./routes/signupRoutes"))
 app.use("/completeProfile", require("./routes/signupRoutes"))
@@ -33,6 +33,10 @@ app.use("/documents", require("./routes/documentRoutes"))
 app.use("/verifyProfile", require("./routes/documentRoutes"))
 app.use("/adminSignin", require("./routes/adminSigninRoutes"))
 app.use("/adminSignup", require("./routes/adminSignupRoutes"))
+app.use("/subAdmin", require("./routes/subAdminRoutes"))
+app.use("/location", require("./routes/locationRoutes"))
+app.use("/station", require("./routes/stationRoutes"))
+app.use("/scooter", require("./routes/scooterRoutes"))
 
 
 

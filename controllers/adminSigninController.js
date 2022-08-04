@@ -31,13 +31,9 @@ exports.postAdminSignin = (req, res) => {
 }
 
 exports.checkLogin = (req, res) => {
-    token1 = req.headers.authorization;
-    token3 = token1.replace("Bearer ", "");
-    console.log(token3);
-    const data = jwt.verify(token3, process.env.key)
-    if (data._id === process.env.id) {
-        res.json("Already Logged in")
-    }
+
+    res.json("Already Logged in")
+
 
 
 }
