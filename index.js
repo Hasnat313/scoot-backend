@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 // const cookieParser = require("cookie-parser");
 // const sessions = require('express-session');
 var cors = require('cors');
-
+require('dotenv').config();
 const app = express();
 
-
+app.use(express.static('public'));
 
 
 app.use(cors());
@@ -37,6 +37,24 @@ app.use("/subAdmin", require("./routes/subAdminRoutes"))
 app.use("/location", require("./routes/locationRoutes"))
 app.use("/station", require("./routes/stationRoutes"))
 app.use("/scooter", require("./routes/scooterRoutes"))
+app.use("/map", require("./routes/googleMapRoutes"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,18 +1,35 @@
 const mongoose = require("mongoose");
 
 
+
 const scooterModel1 = require("../models/scooterModel");
 // const profileModel = require("../models/profileModel");
 // const UserOTPVerificationModel = require("../models/userOTPVerificationModel")
 // const profileModel = require("../models/ProfileModel");
 
-exports.getScooter = (req, res) => {
-    scooterID = req.body.scooterID
-    scooterModel1.findOne({ _id: scooterID }, (err, data) => {
-        if (!err) {
-            res.json(data);
-        }
-    })
+exports.getScooter = async(req, res) => {
+    // scooterID = req.body.scooterID
+    // scooterModel1.findOne({ _id: scooterID }, (err, data) => {
+    //     if (!err) {
+    //         res.json(data);
+    //     }
+    // })
+
+
+    const query = {
+        location: {
+            $nearSphere: {
+                $geometry: {
+                    type: "Point",
+                    coordinates: [33.6466934, 73.0761433],
+                },
+                $maxDistance: 1 * 300,
+            },
+        },
+    };
+
+    const nearbyDrivers = await scooterModel1.find(query);
+    res.json(nearbyDrivers)
 }
 
 exports.postScooter = (req, res) => {
@@ -26,7 +43,7 @@ exports.postScooter = (req, res) => {
     scooter = new scooterModel1({
         _id: mongoose.Types.ObjectId(),
         scooterName: scooterName,
-        scooterLocation: scooterLocation,
+        location: scooterLocation,
         scooterModel: scooterModel,
         scooterStation: scooterStation,
         block: false

@@ -6,9 +6,19 @@ const scooterSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "station"
     },
-    scooterLocation: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "location"
+    // scooterLocation: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "location"
+    // },
+    location: {
+        type: {
+            type: String,
+            default: "Point",
+        },
+        coordinates: {
+            type: [Number],
+            required: true,
+        },
     },
     scooterModel: String,
     block: Boolean
@@ -16,6 +26,6 @@ const scooterSchema = mongoose.Schema({
 
 
 })
-
+scooterSchema.index({ location: "2dsphere" });
 const scooterModel = mongoose.model("scooter", scooterSchema, "scooter");
 module.exports = scooterModel;
